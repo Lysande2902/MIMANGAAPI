@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "QA3HHfLxt6g=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\yengl\\OneDrive - Universidad Tecnológica Metropolitana\\Imágenes\\CopiaDelaCopia\\csharp_initialapi_2025\\MiMangaBot\\MiMangaBot.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\yengl\\.nuget\\packages\\microsoft.aspnetcore.openapi\\9.0.6\\microsoft.aspnetcore.openapi.9.0.6.nupkg.sha512",
+    "C:\\Users\\yengl\\.nuget\\packages\\microsoft.openapi\\1.6.17\\microsoft.openapi.1.6.17.nupkg.sha512",
+    "C:\\Users\\yengl\\.nuget\\packages\\scalar.aspnetcore\\2.4.13\\scalar.aspnetcore.2.4.13.nupkg.sha512"
+  ],
+  "logs": []
+}
