@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\yengl\\OneDrive - Universidad Tecnológica Metropolitana\\Imágenes\\CopiaDelaCopia\\csharp_initialapi_2025\\MiMangaBot\\MiMangaBot.csproj": {}
+    "C:\\Users\\juanm\\OneDrive\\Documents\\POO\\2do Parcial\\MiMangaBot_Clone_En_Equipo\\MIMANGAAPI\\MiMangaBot.csproj": {}
   },
   "projects": {
-    "C:\\Users\\yengl\\OneDrive - Universidad Tecnológica Metropolitana\\Imágenes\\CopiaDelaCopia\\csharp_initialapi_2025\\MiMangaBot\\MiMangaBot.csproj": {
+    "C:\\Users\\juanm\\OneDrive\\Documents\\POO\\2do Parcial\\MiMangaBot_Clone_En_Equipo\\MIMANGAAPI\\MiMangaBot.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\yengl\\OneDrive - Universidad Tecnológica Metropolitana\\Imágenes\\CopiaDelaCopia\\csharp_initialapi_2025\\MiMangaBot\\MiMangaBot.csproj",
+        "projectUniqueName": "C:\\Users\\juanm\\OneDrive\\Documents\\POO\\2do Parcial\\MiMangaBot_Clone_En_Equipo\\MIMANGAAPI\\MiMangaBot.csproj",
         "projectName": "MiMangaBot",
-        "projectPath": "C:\\Users\\yengl\\OneDrive - Universidad Tecnológica Metropolitana\\Imágenes\\CopiaDelaCopia\\csharp_initialapi_2025\\MiMangaBot\\MiMangaBot.csproj",
-        "packagesPath": "C:\\Users\\yengl\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\yengl\\OneDrive - Universidad Tecnológica Metropolitana\\Imágenes\\CopiaDelaCopia\\csharp_initialapi_2025\\MiMangaBot\\obj\\",
+        "projectPath": "C:\\Users\\juanm\\OneDrive\\Documents\\POO\\2do Parcial\\MiMangaBot_Clone_En_Equipo\\MIMANGAAPI\\MiMangaBot.csproj",
+        "packagesPath": "C:\\Users\\juanm\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\juanm\\OneDrive\\Documents\\POO\\2do Parcial\\MiMangaBot_Clone_En_Equipo\\MIMANGAAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\yengl\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\juanm\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
@@ -38,7 +38,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.100"
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net9.0": {
@@ -86,7 +86,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.107/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.301/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

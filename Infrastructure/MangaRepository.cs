@@ -36,13 +36,13 @@ namespace MiMangaBot.Infrastructure
             return mangas;
         }
 
-        public Manga? GetMangaById(string id)
+        public Manga? GetMangaById(int id)
         {
             using var connection = new MySqlConnection(_connectionString);
             connection.Open();
 
             var command = new MySqlCommand("SELECT * FROM mangas WHERE Id = @id", connection);
-            command.Parameters.AddWithValue("@id", int.Parse(id));
+            command.Parameters.AddWithValue("@id", id);
             using var reader = command.ExecuteReader();
 
             if (reader.Read())
@@ -84,7 +84,7 @@ namespace MiMangaBot.Infrastructure
             command.ExecuteNonQuery();
         }
 
-        public void UpdateManga(string id, Manga manga)
+        public void UpdateManga(int id, Manga manga)
         {
             using var connection = new MySqlConnection(_connectionString);
             connection.Open();
@@ -102,7 +102,7 @@ namespace MiMangaBot.Infrastructure
                 connection
             );
 
-            command.Parameters.AddWithValue("@Id", int.Parse(id));
+            command.Parameters.AddWithValue("@Id", id);
             command.Parameters.AddWithValue("@Titulo", manga.Titulo);
             command.Parameters.AddWithValue("@Genero", manga.Genero);
             command.Parameters.AddWithValue("@Anio", manga.Anio_Publicacion);
@@ -113,13 +113,13 @@ namespace MiMangaBot.Infrastructure
             command.ExecuteNonQuery();
         }
 
-        public void DeleteManga(string id)
+        public void DeleteManga(int id)
         {
             using var connection = new MySqlConnection(_connectionString);
             connection.Open();
 
             var command = new MySqlCommand("DELETE FROM mangas WHERE Id = @id", connection);
-            command.Parameters.AddWithValue("@id", int.Parse(id));
+            command.Parameters.AddWithValue("@id", id);
             command.ExecuteNonQuery();
         }
 

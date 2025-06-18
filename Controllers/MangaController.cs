@@ -43,7 +43,7 @@ namespace MiMangaBot.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Manga> GetMangaById([FromRoute] string id)
+        public ActionResult<Manga> GetMangaById([FromRoute] int id)
         {
             var manga = _mangaServices.GetMangaById(id);
             if (manga == null)
@@ -59,19 +59,19 @@ namespace MiMangaBot.Controllers
             _mangaServices.AddManga(manga);
             return CreatedAtAction(nameof(GetMangaById), new { id = manga.Id }, manga);
         }
-
         [HttpPut("{id}")]
-        public ActionResult UpdateManga(string id, [FromBody] Manga updatedManga)
+        public ActionResult UpdateManga(int id, [FromBody] Manga updatedManga)
         {
             _mangaServices.UpdateManga(id, updatedManga);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public ActionResult DeleteManga(string id)
+        public ActionResult DeleteManga(int id)
         {
             _mangaServices.DeleteManga(id);
             return NoContent();
         }
+
     }
 }
