@@ -1,86 +1,131 @@
-using System.Text.Json;
+using System.Data;
 using MiMangaBot.Domain;
 using MiMangaBot.Domain.Filters;
+using MySqlConnector;
 
-namespace MiMangaBot.Infrastructure;
-
-public class MangaRepository
+namespace MiMangaBot.Infrastructure
 {
-    private readonly List<Manga> _mangas;
-    private readonly string _filePath;
-
-    public MangaRepository(IConfiguration configuration)
+    public class MangaRepository
     {
-        _filePath = configuration.GetValue<string>("dataBank") ?? "javerage.library.data.json";
-        _mangas = LoadData();
-    }
+        private readonly string _connectionString =
+            "Server=crossover.proxy.rlwy.net;Port=47368;Database=railway;Uid=root;Pwd=lNJhARzfrNWndzwpJdJIhgAfPWjgmuWa;";
 
-    private string GetCurrentFilePath()
-    {
-        var currentDirectory = Directory.GetCurrentDirectory();
-        var currentFilePath = Path.Combine(currentDirectory, _filePath);
-        return currentFilePath;
-    }
-
-    private List<Manga> LoadData()
-    {
-        var currentFilePath = GetCurrentFilePath();
-        if (File.Exists(currentFilePath))
+        public IEnumerable<Manga> GetAllMangas()
         {
-            var jsonData = File.ReadAllText(currentFilePath);
-            return JsonSerializer.Deserialize<List<Manga>>(jsonData) ?? new List<Manga>();
+            var mangas = new List<Manga>();
+            using var connection = new MySqlConnection(_connectionString);
+            connection.Open();
+
+            var command = new MySqlCommand("SELECT * FROM mangas", connection);
+            using var reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                mangas.Add(new Manga
+                {
+                    Id = reader.GetInt32("Id"),
+                    Titulo = reader.GetString("Titulo"),
+                    Genero = reader.GetString("Genero"),
+                    Anio_Publicacion = reader.GetInt32("Anio_Publicacion"),
+                    Autor = reader.GetString("Autor"),
+                    Volumenes = reader.GetInt32("Volumenes"),
+                    Sigue_En_Emision = reader.GetBoolean("Sigue_En_Emision")
+                });
+            }
+
+            return mangas;
         }
-        return new List<Manga>();
-    }
 
-    public IEnumerable<Manga> GetAllMangas()
-    {
-        return _mangas;
-    }
-
-    public Manga? GetMangaById(string id)
-    {
-        return _mangas.Find(m => m.Id == id);
-    }
-
-    public void AddManga(Manga manga)
-    {
-        manga.Id = Guid.NewGuid().ToString(); // asigna un nuevo ID al agregar
-        _mangas.Add(manga);
-        SaveData();
-    }
-
-    public void UpdateManga(string id, Manga updatedManga)
-    {
-        var index = _mangas.FindIndex(m => m.Id == id);
-        if (index != -1)
+        public Manga? GetMangaById(string id)
         {
-            updatedManga.Id = id; // conserva el mismo ID
-            _mangas[index] = updatedManga;
-            SaveData();
-        }
-    }
+            using var connection = new MySqlConnection(_connectionString);
+            connection.Open();
 
-    public void DeleteManga(string id)
-    {
-        var manga = GetMangaById(id);
-        if (manga != null)
+            var command = new MySqlCommand("SELECT * FROM mangas WHERE Id = @id", connection);
+            command.Parameters.AddWithValue("@id", int.Parse(id));
+            using var reader = command.ExecuteReader();
+
+            if (reader.Read())
+            {
+                return new Manga
+                {
+                    Id = reader.GetInt32("Id"),
+                    Titulo = reader.GetString("Titulo"),
+                    Genero = reader.GetString("Genero"),
+                    Anio_Publicacion = reader.GetInt32("Anio_Publicacion"),
+                    Autor = reader.GetString("Autor"),
+                    Volumenes = reader.GetInt32("Volumenes"),
+                    Sigue_En_Emision = reader.GetBoolean("Sigue_En_Emision")
+                };
+            }
+
+            return null;
+        }
+
+        public void AddManga(Manga manga)
         {
-            _mangas.Remove(manga);
-            SaveData();
+            using var connection = new MySqlConnection(_connectionString);
+            connection.Open();
+
+            var command = new MySqlCommand(
+                @"
+                INSERT INTO mangas (Titulo, Genero, Anio_Publicacion, Autor, Volumenes, Sigue_En_Emision)
+                VALUES (@Titulo, @Genero, @Anio, @Autor, @Volumenes, @Sigue)",
+                connection
+            );
+
+            command.Parameters.AddWithValue("@Titulo", manga.Titulo);
+            command.Parameters.AddWithValue("@Genero", manga.Genero);
+            command.Parameters.AddWithValue("@Anio", manga.Anio_Publicacion);
+            command.Parameters.AddWithValue("@Autor", manga.Autor);
+            command.Parameters.AddWithValue("@Volumenes", manga.Volumenes);
+            command.Parameters.AddWithValue("@Sigue", manga.Sigue_En_Emision);
+
+            command.ExecuteNonQuery();
         }
-    }
 
-    public IEnumerable<Manga> SearchMangas(MangaFilter filter)
-    {
-        return _mangas.Where(filter.BuildFilter());
-    }
+        public void UpdateManga(string id, Manga manga)
+        {
+            using var connection = new MySqlConnection(_connectionString);
+            connection.Open();
 
-    private void SaveData()
-    {
-        File.WriteAllText(
-            GetCurrentFilePath(),
-            JsonSerializer.Serialize(_mangas, new JsonSerializerOptions { WriteIndented = true })
-        );
+            var command = new MySqlCommand(
+                @"
+                UPDATE mangas SET 
+                    Titulo = @Titulo,
+                    Genero = @Genero,
+                    Anio_Publicacion = @Anio,
+                    Autor = @Autor,
+                    Volumenes = @Volumenes,
+                    Sigue_En_Emision = @Sigue
+                WHERE Id = @Id",
+                connection
+            );
+
+            command.Parameters.AddWithValue("@Id", int.Parse(id));
+            command.Parameters.AddWithValue("@Titulo", manga.Titulo);
+            command.Parameters.AddWithValue("@Genero", manga.Genero);
+            command.Parameters.AddWithValue("@Anio", manga.Anio_Publicacion);
+            command.Parameters.AddWithValue("@Autor", manga.Autor);
+            command.Parameters.AddWithValue("@Volumenes", manga.Volumenes);
+            command.Parameters.AddWithValue("@Sigue", manga.Sigue_En_Emision);
+
+            command.ExecuteNonQuery();
+        }
+
+        public void DeleteManga(string id)
+        {
+            using var connection = new MySqlConnection(_connectionString);
+            connection.Open();
+
+            var command = new MySqlCommand("DELETE FROM mangas WHERE Id = @id", connection);
+            command.Parameters.AddWithValue("@id", int.Parse(id));
+            command.ExecuteNonQuery();
+        }
+
+        public IEnumerable<Manga> SearchMangas(MangaFilter filter)
+        {
+            return GetAllMangas().Where(filter.BuildFilter());
+        }
     }
 }
